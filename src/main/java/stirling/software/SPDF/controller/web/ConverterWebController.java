@@ -99,14 +99,6 @@ public class ConverterWebController {
         return modelAndView;
     }
 
-    @GetMapping("/pdf-to-csv")
-    @Hidden
-    public ModelAndView pdfToCSV() {
-        ModelAndView modelAndView = new ModelAndView("convert/pdf-to-csv");
-        modelAndView.addObject("currentPage", "pdf-to-csv");
-        return modelAndView;
-    }
-
 
     @GetMapping("/pdf-to-pdfa")
     @Hidden
