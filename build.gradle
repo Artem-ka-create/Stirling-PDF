@@ -82,6 +82,8 @@ dependencies {
     implementation group: 'org.apache.pdfbox', name: 'jbig2-imageio', version: '3.0.4'
     implementation 'commons-io:commons-io:2.13.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+// https://mvnrepository.com/artifact/junit/junit
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 
     //general PDF
 
@@ -98,6 +100,7 @@ dependencies {
     implementation 'org.commonmark:commonmark:0.21.0'
     // https://mvnrepository.com/artifact/com.github.vladimir-bukhtoyarov/bucket4j-core
     implementation 'com.github.vladimir-bukhtoyarov:bucket4j-core:7.6.0'
+    testImplementation 'junit:junit:4.13.1'
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     compileOnly 'org.projectlombok:lombok:1.18.28'

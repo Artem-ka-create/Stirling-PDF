@@ -36,7 +36,9 @@ public class ConvertHtmlToPDF {
 	        String originalFilename = fileInput.getOriginalFilename();
 	        if (originalFilename == null || (!originalFilename.endsWith(".html") && !originalFilename.endsWith(".zip"))) {
 	            throw new IllegalArgumentException("File must be either .html or .zip format.");
-	        }byte[] pdfBytes = FileToPdf.convertHtmlToPdf( fileInput.getBytes(), originalFilename);
+	        }
+
+			byte[] pdfBytes = FileToPdf.convertHtmlToPdf( fileInput.getBytes(), originalFilename);
 	        
 	        String outputFilename = originalFilename.replaceFirst("[.][^.]+$", "") + ".pdf";  // Remove file extension and append .pdf
 	        
