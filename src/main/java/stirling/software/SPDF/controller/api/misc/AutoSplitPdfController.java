@@ -80,12 +80,16 @@ public class AutoSplitPdfController {
         // Remove split documents that have no pages
         splitDocuments.removeIf(pdDocument -> pdDocument.getNumberOfPages() == 0);
 
-        for (PDDocument splitDocument : splitDocuments) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            splitDocument.save(baos);
-            splitDocumentsBoas.add(baos);
-            splitDocument.close();
-        }
+        splitDocuments.forEach( (splitDoc) -> {
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                document.save(baos);
+                splitDocumentsBoas.add(baos);
+                document.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         document.close();
 

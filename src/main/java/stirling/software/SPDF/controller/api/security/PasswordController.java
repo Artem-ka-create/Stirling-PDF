@@ -24,8 +24,6 @@ import stirling.software.SPDF.utils.WebResponseUtils;
 @Tag(name = "Security", description = "Security APIs")
 public class PasswordController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PasswordController.class);
-
 
     @PostMapping(consumes = "multipart/form-data", value = "/remove-password")
     @Operation(

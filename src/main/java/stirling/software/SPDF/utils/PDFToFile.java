@@ -74,14 +74,19 @@ public class PDFToFile {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream);
 
-                for (File outputFile : outputFiles) {
-                    ZipEntry entry = new ZipEntry(outputFile.getName());
+                outputFiles.stream().forEach((file)->{
+                    try{
+                    ZipEntry entry = new ZipEntry(file.getName());
                     zipOutputStream.putNextEntry(entry);
-                    FileInputStream fis = new FileInputStream(outputFile);
+                    FileInputStream fis = new FileInputStream(file);
                     IOUtils.copy(fis, zipOutputStream);
                     fis.close();
                     zipOutputStream.closeEntry();
-                }
+                    }catch (Exception e){
+                        System.out.println(e);
+                    }
+
+                });
 
                 zipOutputStream.close();
                 fileBytes = byteArrayOutputStream.toByteArray();

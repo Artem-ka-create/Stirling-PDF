@@ -28,7 +28,6 @@ import stirling.software.SPDF.utils.WebResponseUtils;
 @Tag(name = "Convert", description = "Convert APIs")
 public class ConvertImgPDFController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConvertImgPDFController.class);
 
     @PostMapping(consumes = "multipart/form-data", value = "/pdf/img")
     @Operation(summary = "Convert PDF to image(s)",

@@ -34,13 +34,10 @@ public class MergeController {
     private static final Logger logger = LoggerFactory.getLogger(MergeController.class);
 
 
-public PDDocument mergeDocuments(List<PDDocument> documents) throws IOException {
+public PDDocument mergeDocuments(List<PDDocument> documents) {
+
 	PDDocument mergedDoc = new PDDocument();
-    for (PDDocument doc : documents) {
-        for (PDPage page : doc.getPages()) {
-            mergedDoc.addPage(page);
-        }
-    }
+    documents.forEach((doc)-> doc.getPages().forEach(mergedDoc::addPage));
     return mergedDoc;
 }
 

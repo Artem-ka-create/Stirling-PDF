@@ -42,10 +42,6 @@ public class ConvertOfficeController {
         // Prepare the output file path
         Path tempOutputFile = Files.createTempFile("output_", ".pdf");
 
-        // Run the LibreOffice command
-        List<String> command = new ArrayList<>(Arrays.asList("unoconv", "-vvv", "-f", "pdf", "-o", tempOutputFile.toString(), tempInputFile.toString()));
-        ProcessExecutorResult returnCode = ProcessExecutor.getInstance(ProcessExecutor.Processes.LIBRE_OFFICE).runCommandWithOutputHandling(command);
-
         // Read the converted PDF file
         byte[] pdfBytes = Files.readAllBytes(tempOutputFile);
 

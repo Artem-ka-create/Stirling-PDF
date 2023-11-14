@@ -56,28 +56,38 @@ public class WatermarkController {
 		PDDocument document = PDDocument.load(pdfFile.getInputStream());
 
 		// Create a page in the document
-		for (PDPage page : document.getPages()) {
+		document.getPages().forEach((page ->{
 
-			// Get the page's content stream
-			PDPageContentStream contentStream = new PDPageContentStream(document, page,
-					PDPageContentStream.AppendMode.APPEND, true);
+			try{
 
-			// Set transparency
-			PDExtendedGraphicsState graphicsState = new PDExtendedGraphicsState();
-			graphicsState.setNonStrokingAlphaConstant(opacity);
-			contentStream.setGraphicsStateParameters(graphicsState);
+				// Get the page's content stream
+				PDPageContentStream contentStream = new PDPageContentStream(document, page,
+						PDPageContentStream.AppendMode.APPEND, true);
 
-			if (watermarkType.equalsIgnoreCase("text")) {
-				addTextWatermark(contentStream, watermarkText, document, page, rotation, widthSpacer, heightSpacer,
-						fontSize, alphabet);
-			} else if (watermarkType.equalsIgnoreCase("image")) {
-				addImageWatermark(contentStream, watermarkImage, document, page, rotation, widthSpacer, heightSpacer,
-						fontSize);
-			}
+				// Set transparency
+				PDExtendedGraphicsState graphicsState = new PDExtendedGraphicsState();
+				graphicsState.setNonStrokingAlphaConstant(opacity);
+				contentStream.setGraphicsStateParameters(graphicsState);
+
+				if (watermarkType.equalsIgnoreCase("text")) {
+					addTextWatermark(contentStream, watermarkText, document, page, rotation, widthSpacer, heightSpacer,
+							fontSize, alphabet);
+				} else if (watermarkType.equalsIgnoreCase("image")) {
+					addImageWatermark(contentStream, watermarkImage, document, page, rotation, widthSpacer, heightSpacer,
+							fontSize);
+				}
 
 			// Close the content stream
 			contentStream.close();
-		}
+			}catch (IOException e){
+
+				try {
+					throw e;
+				} catch (IOException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+		}));
 
 		return WebResponseUtils.pdfDocToWebResponse(document,
 				pdfFile.getOriginalFilename().replaceFirst("[.][^.]+$", "") + "_watermarked.pdf");

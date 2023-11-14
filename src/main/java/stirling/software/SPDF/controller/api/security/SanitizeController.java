@@ -87,52 +87,54 @@ public class SanitizeController {
 	            namesDict.removeItem(COSName.getPDFName("JavaScript"));
 	        }
 	    }
-	    
-	    for (PDPage page : document.getPages()) {
-            for (PDAnnotation annotation : page.getAnnotations()) {
-                if (annotation instanceof PDAnnotationWidget) {
-                    PDAnnotationWidget widget = (PDAnnotationWidget) annotation;
-                    PDAction action = widget.getAction();
-                    if (action instanceof PDActionJavaScript) {
-                        widget.setAction(null);
-                    }
+
+		document.getPages().forEach(page -> {
+			try {
+				page.getAnnotations().forEach(annotation -> {
+					if (annotation instanceof PDAnnotationWidget) {
+						PDAnnotationWidget widget = (PDAnnotationWidget) annotation;
+						PDAction action = widget.getAction();
+						if (action instanceof PDActionJavaScript) {
+							widget.setAction(null);
+						}
+					}
+				});
+
+				PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
+				if (acroForm != null) {
+
+					acroForm.getFields().stream().forEach(field -> {
+						PDFormFieldAdditionalActions actions = field.getActions();
+						if(actions != null) {
+							if (actions.getC() instanceof PDActionJavaScript) {
+								actions.setC(null);
+							}
+							if (actions.getF() instanceof PDActionJavaScript) {
+								actions.setF(null);
+							}
+							if (actions.getK() instanceof PDActionJavaScript) {
+								actions.setK(null);
+							}
+							if (actions.getV() instanceof PDActionJavaScript) {
+								actions.setV(null);
+							}
+						}
+					});
 				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
-	        PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
-	        if (acroForm != null) {
-	            for (PDField field : acroForm.getFields()) {
-	            	PDFormFieldAdditionalActions actions = field.getActions();
-	            	if(actions != null) {
-	            		if (actions.getC() instanceof PDActionJavaScript) {
-	                        actions.setC(null);
-	                    }
-	                    if (actions.getF() instanceof PDActionJavaScript) {
-	                        actions.setF(null);
-	                    }
-	                    if (actions.getK() instanceof PDActionJavaScript) {
-	                        actions.setK(null);
-	                    }
-	                    if (actions.getV() instanceof PDActionJavaScript) {
-	                        actions.setV(null);
-	                    }
-	            	}
-	            }
-	        }
-	    }
+		});
 	}
 
 
 
-
     private void sanitizeEmbeddedFiles(PDDocument document) {
-        PDPageTree allPages = document.getPages();
+		document.getPages().forEach(page -> {
+			PDResources res = page.getResources();
+			res.getCOSObject().removeItem(COSName.getPDFName("EmbeddedFiles"));
 
-        for (PDPage page : allPages) {
-            PDResources res = page.getResources();
-
-            // Remove embedded files from the PDF
-            res.getCOSObject().removeItem(COSName.getPDFName("EmbeddedFiles"));
-        }
+		});
     }
     
 
@@ -146,16 +148,20 @@ public class SanitizeController {
 
 
     private void sanitizeLinks(PDDocument document) throws IOException {
-        for (PDPage page : document.getPages()) {
-            for (PDAnnotation annotation : page.getAnnotations()) {
-                if (annotation instanceof PDAnnotationLink) {
-                    PDAction action = ((PDAnnotationLink) annotation).getAction();
-                    if (action instanceof PDActionLaunch || action instanceof PDActionURI) {
-                        ((PDAnnotationLink) annotation).setAction(null);
-                    }
-                }
-            }
-        }
+		document.getPages().forEach(page -> {
+			try {
+				page.getAnnotations().forEach(annotation -> {
+					if (annotation instanceof PDAnnotationLink) {
+						PDAction action = ((PDAnnotationLink) annotation).getAction();
+						if (action instanceof PDActionLaunch || action instanceof PDActionURI) {
+							((PDAnnotationLink) annotation).setAction(null);
+						}
+					}
+				});
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		});
     }
 
     private void sanitizeFonts(PDDocument document) {

@@ -43,16 +43,14 @@ public class ConvertWebsiteToPDF {
 		    // Prepare the output file path
 		    tempOutputFile = Files.createTempFile("output_", ".pdf");
 	
-		    // Prepare the OCRmyPDF command
+		    // Prepare the OCRmyPDF command8
 		    List<String> command = new ArrayList<>();
 		    command.add("weasyprint");
 		    command.add(URL);
 		    command.add(tempOutputFile.toString());
-	
-		    ProcessExecutorResult returnCode = ProcessExecutor.getInstance(ProcessExecutor.Processes.WEASYPRINT).runCommandWithOutputHandling(command);
-	
+
 		    // Read the optimized PDF file
-		    pdfBytes = Files.readAllBytes(tempOutputFile);
+			pdfBytes = Files.readAllBytes(tempOutputFile);
 	    }
 	    finally {
 		    // Clean up the temporary files

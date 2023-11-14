@@ -110,7 +110,6 @@ public class AutoRenameController {
 
     	        String header = reader.getText(document);
 
-
         
         // Sanitize the header string by removing characters not allowed in a filename.
         if (header != null && header.length() < 255) {
@@ -121,8 +120,4 @@ public class AutoRenameController {
         	return WebResponseUtils.pdfDocToWebResponse(document, file.getOriginalFilename());
         }
     }
-    
-
-
-
 }
