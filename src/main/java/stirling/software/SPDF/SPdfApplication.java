@@ -13,8 +13,6 @@ import jakarta.annotation.PostConstruct;
 import stirling.software.SPDF.config.ConfigInitializer;
 import stirling.software.SPDF.utils.GeneralUtils;
 @SpringBootApplication
-
-//@EnableScheduling
 public class SPdfApplication {
 	
 	@Autowired
